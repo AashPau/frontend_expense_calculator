@@ -18,7 +18,7 @@ export const postNewUser = async (userObj) => {
 
 export const loginUser = async (userObj) => {
   try {
-    const { data } = await axios.post(userEP, userObj);
+    const { data } = await axios.post(userEP + "/login", userObj);
     return data;
   } catch (error) {
     console.log(error);

@@ -4,6 +4,7 @@ import { TopNav } from "../components/TopNav";
 import { Col, Container, Form, Row, Button, Alert } from "react-bootstrap";
 import { loginUser } from "../util/axiosHandler";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   email: "",
@@ -11,7 +12,8 @@ const initialState = {
 };
 
 const Login = () => {
-  const [form, setForm] = useState(initialState);
+  const navigate = useNavigate();
+  const [user, setUser] = useState(initialState);
   const [response, setResponse] = useState({});
 
   const inputs = [
@@ -33,20 +35,18 @@ const Login = () => {
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
     //call axioshandler
-    const result = await loginUser(form);
+    const { status, message } = await loginUser(user);
 
-    console.log(result);
-    setResponse(result);
-    if (result.status === "success") {
-      setForm(initialState);
-    }
+    setResponse({ status, message });
+
+    (status === "success") & navigate("/dashboard");
   };
   return (
     <div>
