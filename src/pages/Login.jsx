@@ -1,9 +1,19 @@
 import { CustomInput } from "../components/CustomInput";
 import { Footer } from "../components/Footer";
 import { TopNav } from "../components/TopNav";
-import { Col, Container, Form, Row, Button } from "react-bootstrap";
+import { Col, Container, Form, Row, Button, Alert } from "react-bootstrap";
+import { loginUser } from "../util/axiosHandler";
+import { useState } from "react";
+
+const initialState = {
+  email: "",
+  password: "",
+};
 
 const Login = () => {
+  const [form, setForm] = useState(initialState);
+  const [response, setResponse] = useState({});
+
   const inputs = [
     {
       label: "Email",
@@ -20,6 +30,24 @@ const Login = () => {
       required: true,
     },
   ];
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+
+    //call axioshandler
+    const result = await loginUser(form);
+
+    console.log(result);
+    setResponse(result);
+    if (result.status === "success") {
+      setForm(initialState);
+    }
+  };
   return (
     <div>
       {/* header */}
@@ -43,13 +71,24 @@ const Login = () => {
             <div className="shadow-lg p-5 rounded border w-75 mt-5 mb-5">
               <h2 className="text-center">Login Now</h2>
               <hr />
-              <Form>
+              {response?.message && (
+                <Alert
+                  variant={
+                    response?.status === "success" ? "success" : "danger"
+                  }
+                >
+                  {response.message}
+                </Alert>
+              )}
+              <Form onSubmit={handleOnSubmit}>
                 {inputs.map((item, i) => (
                   //spread the item for the name, types and placeholder
-                  <CustomInput key={i} {...item} />
+                  <CustomInput onChange={handleOnChange} key={i} {...item} />
                 ))}
                 <div className="d-grid">
-                  <Button variant="primary">login Now</Button>
+                  <Button variant="primary" type="submit">
+                    login Now
+                  </Button>
                 </div>
               </Form>
               <p className="text-end mt-3">

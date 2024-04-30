@@ -2,17 +2,19 @@ import { useState } from "react";
 import { CustomInput } from "../components/CustomInput";
 import { Footer } from "../components/Footer";
 import { TopNav } from "../components/TopNav";
-import { Col, Container, Form, Row, Button } from "react-bootstrap";
+import { Col, Container, Form, Row, Button, Alert } from "react-bootstrap";
+import { postNewUser } from "../util/axiosHandler";
 
 const initialState = {
   name: "",
   email: "",
-  phone: null,
+  phone: "",
   password: "",
   confirmPassword: "",
 };
 const Signup = () => {
   const [form, setForm] = useState(initialState);
+  const [response, setResponse] = useState({});
   const inputs = [
     {
       label: "Name",
@@ -20,6 +22,7 @@ const Signup = () => {
       type: "text",
       placeholder: "Enter your name",
       required: true,
+      value: form.name,
     },
     {
       label: "Email",
@@ -27,13 +30,15 @@ const Signup = () => {
       type: "email",
       placeholder: "Enter email",
       required: true,
+      value: form.email,
     },
     {
       label: "Phone",
       name: "phone",
       type: "number",
       placeholder: "0400000000",
-      required: false,
+      required: true,
+      value: form.phone,
     },
     {
       label: "Password",
@@ -41,6 +46,7 @@ const Signup = () => {
       type: "password",
       placeholder: "********",
       required: true,
+      value: form.password,
     },
     {
       label: "Confirm Password",
@@ -48,12 +54,27 @@ const Signup = () => {
       type: "password",
       placeholder: "********",
       required: true,
+      value: form.confirmPassword,
     },
   ];
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitted value:", form);
+
+    const { confirmPassword, ...rest } = form;
+
+    if (confirmPassword !== rest.password) {
+      return alert("Passwords do not match. Please check the password");
+    }
+
+    //call axioshandler
+    const result = await postNewUser(rest);
+
+    console.log(result);
+    setResponse(result);
+    if (result.status === "success") {
+      setForm(initialState);
+    }
   };
 
   const handleOnChange = (e) => {
@@ -86,6 +107,15 @@ const Signup = () => {
             <div className="shadow-lg p-5 rounded border w-75 mt-5 mb-5">
               <h2 className="text-center">Signup Now</h2>
               <hr />
+              {response?.message && (
+                <Alert
+                  variant={
+                    response?.status === "success" ? "success" : "danger"
+                  }
+                >
+                  {response.message}
+                </Alert>
+              )}
               <Form onSubmit={handleOnSubmit}>
                 {inputs.map((item, i) => (
                   //spread the item for the name, types and placeholder
@@ -93,12 +123,13 @@ const Signup = () => {
                 ))}
                 <div className="d-grid">
                   <Button variant="primary" type="submit">
-                    login Now
+                    Sign Up
                   </Button>
                 </div>
               </Form>
+
               <p className="text-end mt-3">
-                Alerady have an account <a href="/">Sign Up</a> now
+                Alerady have an account <a href="/">Login</a> now
               </p>
             </div>
           </Col>
