@@ -4,7 +4,7 @@ import { postNewTransaction } from "../util/axiosHandler";
 import { toast } from "react-toastify";
 import { Button, Col, Form, Row } from "react-bootstrap";
 
-export const NewTransForm = ({ gatherUserTransactions }) => {
+export const NewTransForm = ({ getUserTransactions }) => {
   const [form, setForm] = useState({});
   const inputs = [
     {
@@ -48,7 +48,8 @@ export const NewTransForm = ({ gatherUserTransactions }) => {
     setForm({ ...form, [name]: value });
   };
   const handleOnSubmit = async (e) => {
-    //dont reload the browser
+    //dont reload the browser .
+
     e.preventDefault();
     const { status, message } = await postNewTransaction(form);
     toast[status](message);
