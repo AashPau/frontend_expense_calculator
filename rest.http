@@ -1,0 +1,15 @@
+# user section
+###post user
+POST http://localhost:8000/api/v1/users
+Content-Type: application/json
+
+{
+    "name": "Jack",
+    "password": "asdfgh",
+    "phone" : "879869898",
+    "email" : "a@a.com"
+}
+
+# transaction section
+### transaction section
+GET http://localhost:8000/api/v1/users

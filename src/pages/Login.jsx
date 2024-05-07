@@ -3,7 +3,7 @@ import { Footer } from "../components/Footer";
 import { TopNav } from "../components/TopNav";
 import { Col, Container, Form, Row, Button, Alert } from "react-bootstrap";
 import { loginUser } from "../util/axiosHandler";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const initialState = {
@@ -11,10 +11,14 @@ const initialState = {
   password: "",
 };
 
-const Login = () => {
+const Login = ({ setLoggedUser, loggedUser }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(initialState);
   const [response, setResponse] = useState({});
+
+  useEffect(() => {
+    loggedUser?._id && navigate("/dashboard");
+  }, [loggedUser]);
 
   const inputs = [
     {
@@ -42,11 +46,16 @@ const Login = () => {
     e.preventDefault();
 
     //call axioshandler
-    const { status, message } = await loginUser(user);
+    const result = await loginUser(user);
 
-    setResponse({ status, message });
+    setResponse({ status: result?.status, message: result?.message });
 
-    (status === "success") & navigate("/dashboard");
+    if (result?.status === "success") {
+      setLoggedUser(result.user);
+
+      localStorage.setItem("user", JSON.stringify(result.user));
+      navigate("/dashboard");
+    }
   };
   return (
     <div>
