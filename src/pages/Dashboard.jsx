@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { Footer } from "../components/Footer";
 import { AuthComp } from "../components/AuthComp";
 import { TopNav } from "../components/TopNav";
@@ -19,6 +19,7 @@ const Dashboard = ({ loggedUser }) => {
 
   const getUserTransactions = async () => {
     const { status, message, trans } = await fetchTransaction();
+
     console.log(trans);
     status === "error" ? toast.error(message) : setTransactions(trans);
   };
@@ -31,10 +32,25 @@ const Dashboard = ({ loggedUser }) => {
       <Container className="main pt-2">
         <h4>Dashboard | Welcome Back {loggedUser?.name}</h4>
         <hr />
-        <CustomModal title="add new transaction" show={showForm} />
-        <NewTransForm getUserTransactions={getUserTransactions} />
+        <CustomModal
+          title="add new transaction"
+          show={showForm}
+          setShowForm={setShowForm}
+        >
+          <NewTransForm
+            getUserTransactions={getUserTransactions}
+            setShowForm={setShowForm}
+          />
+        </CustomModal>
         <Row>
-          <Col className="mt-5">
+          <Col className="text-end">
+            <Button onClick={() => setShowForm(true)}>
+              Add New Transaction
+            </Button>
+          </Col>
+        </Row>
+        <Row className="mt-5">
+          <Col>
             <TransactionTable transactions={transactions} />
           </Col>
         </Row>

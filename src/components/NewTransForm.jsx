@@ -4,7 +4,7 @@ import { postNewTransaction } from "../util/axiosHandler";
 import { toast } from "react-toastify";
 import { Button, Col, Form, Row } from "react-bootstrap";
 
-export const NewTransForm = ({ gatherUserTransactions }) => {
+export const NewTransForm = ({ getUserTransactions, setShowForm }) => {
   const [form, setForm] = useState({});
   const inputs = [
     {
@@ -35,6 +35,7 @@ export const NewTransForm = ({ gatherUserTransactions }) => {
       name: "amount",
       type: "number",
       placeholder: "Please enter Amount",
+      min: "1",
       required: true,
     },
     {
@@ -52,7 +53,7 @@ export const NewTransForm = ({ gatherUserTransactions }) => {
     e.preventDefault();
     const { status, message } = await postNewTransaction(form);
     toast[status](message);
-    status == "success" && getUserTransactions();
+    status == "success" && getUserTransactions() && setShowForm(false);
   };
   return (
     // <Form>

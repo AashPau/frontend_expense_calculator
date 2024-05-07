@@ -62,8 +62,8 @@ const Login = ({ setLoggedUser, loggedUser }) => {
       {/* header */}
       <TopNav />
       {/* mainbody */}
-      <Container className="main" fluid>
-        <Row>
+      <Container fluid>
+        <Row className="main">
           <Col
             md={6}
             className="bg-primary main vh-100 p-5 d-flex justify-content-center align-items-center"
