@@ -4,7 +4,7 @@ import { postNewTransaction } from "../util/axiosHandler";
 import { toast } from "react-toastify";
 import { Button, Col, Form, Row } from "react-bootstrap";
 
-export const NewTransForm = ({ gatherUserTransactions }) => {
+export const NewTransForm = ({ getUserTransactions }) => {
   const [form, setForm] = useState({});
   const inputs = [
     {

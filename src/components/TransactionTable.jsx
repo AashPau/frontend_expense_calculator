@@ -1,8 +1,10 @@
 import Table from "react-bootstrap/Table";
 
-export const TransactionTable = ({ transactions }) => {
+export const TransactionTable = ({}) => {
   const total = transactions.reduce((acc, item) => {
-    return item.type === "income" ? acc + item.amount : acc - item.amount;
+    return transactionsitem.type === "income"
+      ? acc + item.amount
+      : acc - item.amount;
   }, 0);
   return (
     <>
