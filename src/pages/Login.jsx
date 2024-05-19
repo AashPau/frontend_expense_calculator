@@ -5,14 +5,17 @@ import { Col, Container, Form, Row, Button, Alert } from "react-bootstrap";
 import { loginUser } from "../util/axiosHandler";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "./UserContext";
 
 const initialState = {
   email: "",
   password: "",
 };
 
-const Login = ({ setLoggedUser, loggedUser }) => {
+const Login = () => {
   const navigate = useNavigate();
+
+  const { loggedUser, setLoggedUser } = useUser();
   const [user, setUser] = useState(initialState);
   const [response, setResponse] = useState({});
 

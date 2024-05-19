@@ -1,41 +1,50 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { Footer } from "../components/Footer";
 import { AuthComp } from "../components/AuthComp";
 import { TopNav } from "../components/TopNav";
 import { NewTransForm } from "../components/NewTransForm";
 import { TransactionTable } from "../components/TransactionTable";
-import { fetchTransaction } from "../util/axiosHandler";
-import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+
 import { CustomModal } from "../components/CustomModal";
+import { useUser } from "./UserContext";
 
-const Dashboard = ({ loggedUser }) => {
-  const [transactions, setTransactions] = useState([]);
-  const [showForm, setShowForm] = useState(false);
+const Dashboard = () => {
+  const { loggedUser, setShowForm } = useUser();
 
-  useEffect(() => {
-    getUserTransactions();
-  }, []);
-
-  const getUserTransactions = async () => {
-    const { status, message, trans } = await fetchTransaction();
-    console.log(trans);
-    status === "error" ? toast.error(message) : setTransactions(trans);
-  };
   return (
-    <AuthComp loggedUser={loggedUser}>
+    <AuthComp>
       {/* console.log(loggedUser) */}
       {/* header */}
-      <TopNav loggedUser={loggedUser} />
+      <TopNav />
       {/* mainbody */}
       <Container className="main pt-2">
         <h4>Dashboard | Welcome Back {loggedUser?.name}</h4>
         <hr />
-        <CustomModal title="add new transaction" show={showForm} />
-        <NewTransForm getUserTransactions={getUserTransactions} />
+        <CustomModal
+          title="add new transaction"
+          //  show={showForm}
+        >
+          <NewTransForm
+          // setShowForm={setShowForm}
+          // getUserTransactions={getUserTransactions}
+          />
+        </CustomModal>
+        <Row>
+          <Col className="text-end">
+            <Button
+              onClick={() => {
+                setShowForm(true);
+              }}
+            >
+              Add New Transactions
+            </Button>
+          </Col>
+        </Row>
         <Row>
           <Col className="mt-5">
-            <TransactionTable transactions={transactions} />
+            <TransactionTable
+            // transactions={transactions}
+            />
           </Col>
         </Row>
       </Container>

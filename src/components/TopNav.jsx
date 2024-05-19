@@ -1,8 +1,10 @@
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import { useUser } from "../pages/UserContext";
 
-export const TopNav = ({ loggedUser }) => {
+export const TopNav = () => {
+  const { loggedUser } = useUser();
   const handleOnLogOut = () => {
     localStorage.removeItem("user");
   };

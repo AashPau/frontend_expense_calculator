@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CustomInput, CustomSelect } from "../components/CustomInput";
 import { postNewTransaction } from "../util/axiosHandler";
 import { toast } from "react-toastify";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import { useUser } from "../pages/UserContext";
 
-export const NewTransForm = ({ getUserTransactions }) => {
+export const NewTransForm = () => {
   const [form, setForm] = useState({});
+  const { getUserTransactions, setShowForm } = useUser();
+
   const inputs = [
     {
       name: "type",
@@ -53,7 +56,7 @@ export const NewTransForm = ({ getUserTransactions }) => {
     e.preventDefault();
     const { status, message } = await postNewTransaction(form);
     toast[status](message);
-    status == "success" && getUserTransactions();
+    status == "success" && getUserTransactions() && setShowForm(false);
   };
   return (
     // <Form>
