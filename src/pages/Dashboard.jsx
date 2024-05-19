@@ -7,6 +7,9 @@ import { TransactionTable } from "../components/TransactionTable";
 
 import { CustomModal } from "../components/CustomModal";
 import { useUser } from "./UserContext";
+import { LineGraph } from "../visualRepresentation/LineGraph";
+import { RadaraChart } from "../visualRepresentation/RadaraChart";
+import { ExpensesGraph } from "../visualRepresentation/ExpensesGraph";
 
 const Dashboard = () => {
   const { loggedUser, setShowForm } = useUser();
@@ -47,6 +50,9 @@ const Dashboard = () => {
             />
           </Col>
         </Row>
+        <ExpensesGraph />
+        {/* <LineGraph /> */}
+        {/* <RadaraChart /> */}
       </Container>
       {/* footer */}
       <Footer />
